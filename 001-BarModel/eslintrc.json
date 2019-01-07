@@ -1,0 +1,59 @@
+{
+  "env": {
+    "es6": true,
+    "node": true,
+    "worker": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2015,
+    "sourceType": "module"
+  },
+  "rules": {
+    "block-scoped-var": "warn",
+    "curly": "error",
+    "eqeqeq": "warn",
+    "no-invalid-this": "error",
+    "no-loop-func": "off",
+    "no-self-assign": "error",
+    "no-self-compare": "error",
+    "vars-on-top": "error",
+
+    "strict": [ "error", "global" ],
+
+    "no-delete-var": "off",
+    "no-shadow": [ "error", { "builtinGlobals": true } ],
+    "no-undef": "error",
+    "no-undef-init": "error",
+    "no-undefined": "error",
+    "no-unused-vars": "warn",
+    "no-use-before-define": "error",
+    "no-plusplus": "error",
+    "no-tabs": "error",
+
+    "indent": [ "error", 2 ],
+    "linebreak-style": [ "error", "windows" ],
+    "max-len": [ "warn", { "code": 80, "tabWidth": 2 } ],
+    "no-bitwise": "off",
+    "no-mixed-spaces-and-tabs": "warn",
+    "no-trailing-spaces": "warn",
+    "no-whitespace-before-property": "warn",
+    "operator-linebreak": [ "warn", "after" ],
+    "quotes": [ "warn", "double", { "avoidEscape": true } ],
+    "require-jsdoc": [ "error", {
+        "require": {
+          "FunctionDeclaration": true,
+          "MethodDefinition": true,
+          "ClassDeclaration": true,
+          "ArrowFunctionExpression": false,
+          "FunctionExpression": false
+        }
+      }
+    ],
+    "semi": [ "error", "always" ],
+
+    "arrow-body-style": [ "error", "always" ],
+    "arrow-parens": [ "error", "always" ],
+    "arrow-spacing": [ "warn", { "before": true, "after": true } ]
+  }
+}
