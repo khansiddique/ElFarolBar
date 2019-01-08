@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Individual Object
- * 
+ *
  * @copyright Copyright 2018 Brandenburg University of Technology
  * @author Siddique Reza Khan
  * @license The MIT License (MIT)
@@ -32,6 +32,11 @@ var Individual = new cLASS({
      },
      */
     //Decision for True = to go Bar, & False = Stay Home.
+    "previousDecision": {
+      range: "Boolean",
+      label: "Person's previous decision about go to the bar",
+      shortLabel: "pD"
+    },
     "decision": {
       range: "Boolean",
       label: "Person's decision about go to the bar",
@@ -51,7 +56,7 @@ var Individual = new cLASS({
     },
     /**
  * @namespace
- * 
+ *
  * @property {object}  Strategy type class.
  * @property {weight}  value range -1 to 1 - Randomly choose for one strategy only.
  */
@@ -64,7 +69,7 @@ var Individual = new cLASS({
     },
     /**
     * @namespace
-    * 
+    *
     * @property { object } Strategy type class.
     * @property { weight } value range - 1 to 1 - Randomly choose for one strategy only.
    */
@@ -78,7 +83,7 @@ var Individual = new cLASS({
 
     /**
     * @des
-    * 
+    *
     * @property {array} accuracies- keep value range the accuracy of the decision.
     */
     "accuracies": {
@@ -92,7 +97,7 @@ var Individual = new cLASS({
   methods: {
     /**
      * decide
-     * 
+     *
      * @param {} ...
      * @return ...
      */
@@ -101,18 +106,18 @@ var Individual = new cLASS({
       var count;
       var totalAttendance = 0;
       var numofweekweight = [];
-      
+
       //console.log(this.strategies.length + ', ' + lowerValue + ', ' + upperValue);
-      
+
       /** Select random strategy for the individual and get the weight for calculate
        * and guess total attendance
        * or
        * Select a strategy from getting a data from accuracy vector sets.
       */
       //this.strategySeleteded = ;
-      
+
       //console.log("ACCURACY:" + this.accuracies[this.strategySelecteded]);
-      
+
       //if (this.accuracies[this.strategySelecteded] == 0) {
       this.selectStrategy();
       //console.log("SELECTION:" + this.strategySelecteded);
@@ -121,14 +126,14 @@ var Individual = new cLASS({
       //console.log(numofweekweight);
       //console.log(numofweekweight.weights.length);
       //console.log(numofweekweight.weights[0]);
-      
+
       // create a for loop to get a final attendance based on strategise and weekAttendance.
       for (count = 0; count < numofweekweight.length; count += 1) {
         //console.log("Weight: " + numofweekweight[count] + ", " + "Attendance: " + this.weekAttendance[count]);
         totalAttendance += numofweekweight[count] * this.weekAttendance[count];
-        
+
       }
-      
+
       //}
       //console.log("Total Attendence:"+ totalAttendance);
       if (totalAttendance <= sim.v.threshold) {
@@ -138,11 +143,11 @@ var Individual = new cLASS({
         this.decision = false;
         return false;
       }
-      
+
     },
     /**
      * Add a new history for each indivivuals for each week
-     * 
+     *
      * @param {string} attendance - Current week attendance
      */
     "addAttendance": function (attendance) {
@@ -153,7 +158,7 @@ var Individual = new cLASS({
     /**
     * Create an algorithm to pick an accurate a strategy selection
     * for decision making to go to the bar or not go to the Bar.
-    * @param {-} XXXXX - No argument/parameter pass in the function. 
+    * @param {-} XXXXX - No argument/parameter pass in the function.
     */
     "selectStrategy": function () {
       var maxAccuracyCount = -Infinity;
@@ -162,7 +167,7 @@ var Individual = new cLASS({
       var i; //, s = 0;
       /**
         * loop iteratet with for selection of a random value or previous strategy.
-        * 
+        *
         */
       for (i = 0; i < sim.v.numofstrategy; i += 1) {
         //strategy = [];
@@ -184,26 +189,26 @@ var Individual = new cLASS({
           strategy.push(rand.uniform(-1, 1));
         }
         */
-        
+
     },
 
     /**
      * Increment or decrement the level of the accuracy
-     * 
+     *
      * @param {integer} attendance - check the strategy was accurate or not
-     * if Bar attendence is more than Threshold and Individual make a decision, 
-     * to go Bar then he became unhappy and want to change his strategy for 
+     * if Bar attendence is more than Threshold and Individual make a decision,
+     * to go Bar then he became unhappy and want to change his strategy for
      * the next period of time.
      */
     "accuracyMeasurement": function (attendance) {
       /*
       var bar = cLASS["Bar"].instances["1"];
       var newStrategy;
-      
+
       //Here we try to give an award or Increase the value of selected strategy.
       this.accuracies[this.strategySelecteded] += 1;
       //Here we try to give an degrade or decrease the value of selected strategy.
-      this.accuracies[this.strategySelecteded] -= 1; 
+      this.accuracies[this.strategySelecteded] -= 1;
       */
 
       if (((attendance > sim.v.threshold) && (this.decision === true)) ||
@@ -224,9 +229,9 @@ var Individual = new cLASS({
             break;
           }
         }
-      
+
         console.log("Accuracy Array: " + this.accuracies);
-      } */ 
+      } */
     }
   }
 });

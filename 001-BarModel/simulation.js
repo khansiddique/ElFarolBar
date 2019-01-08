@@ -1,23 +1,23 @@
 /******************************************************************************
  * Bar Model
- * 
+ *
  * @copyright Copyright 2018 Brandenburg University of Technology
  * @author Siddique Reza Khan
  * @license The MIT License (MIT)
  * First Task to Take input from the user for Number of Individual Attendance in Bar
  * N= 100 // initially Value Setup in the Model Variable. ---- Done;
  * Second Task
- * Define Two Class for 
+ * Define Two Class for
  * 1. Individual.js
  * 2. Bar.js
- * 
+ *
  * Third Task
- * Define the Properties for as well as method for the 
+ * Define the Properties for as well as method for the
  * Individual Class
  * Define Properties:
  * Define Methods:
  * Forth Task
- * Define the Properties for as well as method for the 
+ * Define the Properties for as well as method for the
  * Bar Class
  * Define Properties:
  * Define Methods:
@@ -44,15 +44,15 @@ sim.model.timeUnit = "W"; // Weeks
 sim.model.timeIncrement = 1; // optional
 
 /* Object, Event, and Activity types */
-sim.model.objectTypes = ["Individual", "Bar", "Strategy" ]; 
-                                                
+sim.model.objectTypes = ["Individual", "Bar", "Strategy" ];
+
 sim.model.eventTypes = [];
 sim.model.activityTypes = [];
 
 
 /**************************************************************************
  * Global Variable and Global Function
- * 
+ *
  ***************************************************************************/
 /* Global Variables */
 
@@ -121,7 +121,7 @@ sim.scenario.initialState.objects = {
   //   threshold: 60 // At the first day of Bar opening
   //   ///................................... sim.v.peopleAttends
   // }
- 
+
 };
 
 
@@ -133,8 +133,8 @@ sim.scenario.initialState.events = [];
 
 //Initial Functions
 
-// I want to set up all objects for the Indivivual Class property such as 
-// Properties: strategies(Strategy class), decision(Boolean), weekAttendance(NonNegativeInteger), 
+// I want to set up all objects for the Indivivual Class property such as
+// Properties: strategies(Strategy class), decision(Boolean), weekAttendance(NonNegativeInteger),
 //threshold(NonNegativeInteger), etc......
 //
 
@@ -156,7 +156,7 @@ sim.scenario.setupInitialState = function () {
     /**
     * Here Description .
     * @prop {object} weights - A random value required from -1 to 1
-    * @prop {object} strategies - [weight = [],weight = []....number of strategies] 
+    * @prop {object} strategies - [weight = [],weight = []....number of strategies]
     *                             An array of weights for taking one strategy
     */
     for (s = 0; s < sim.v.numofstrategy; s += 1) {
@@ -179,8 +179,9 @@ sim.scenario.setupInitialState = function () {
     strategySelection = rand.uniformInt(0, sim.v.numofstrategy - 1);
     sim.addObject(new Individual({
       id:objId,
-      name:"individual"+i,
-      decision:true,
+      name: "individual" + i,
+      previousDecision: false,
+      decision: true,
       threshold:sim.v.threshold,
       weekAttendance: attendance.slice(),
       //strategies.weights:
@@ -196,11 +197,11 @@ sim.scenario.setupInitialState = function () {
  * Execution
  ******************************************************************************/
 
- 
+
 sim.model.OnEachTimeStep = function () {
   var bar = cLASS["Bar"].instances["1"];
   var individuals=cLASS["Individual"].instances;
-  
+
   //console.log("OBJECTS " + Object.keys(sim.namedObjects));
   //console.log("INDIVIDUALS " + Object.keys(cLASS["Individual"].instances));
 
@@ -243,26 +244,49 @@ sim.model.statistics = {
   },
   */
 
-  /*
-  //??? I can't understand this concept and the properties of expression
-  "avgInventory": {
-    range: "PositiveInteger",
-    label: "Average Inventory",
+  "repeatedVisit": {
+    range: "Decimal",
+    label: "Repeated Visit",
     initialValue: 0,
     showTimeSeries: true,
     computeOnlyAtEnd: false,
-    expression: function () {  /// ??? Concept 
+    expression: function () {
       var total = 0;
-      var entrepreneurs = cLASS["Entrepreneur"].instances;
-      Object.keys( entrepreneurs ).forEach( function ( objId ) {  // ??? Concept 
-        total += entrepreneurs[objId].inventoryLevel;
+      var individual;
+      var individuals = cLASS["Individual"].instances;
+      Object.keys( individuals ).forEach( function ( objId ) {
+        individual = individuals[ objId ];
+        if ( individual.previousDecision && individual.decision ) {
+          total += 1;
+        }
+        individual.previousDecision = individual.decision;
       } );
-      
-      return total / Object.keys( entrepreneurs ).length;  /// ??? Concept 
-    }
-  } 
 
-  */
+      return ( total / Object.keys( individuals ).length ) * 100;
+    }
+  },
+
+  "repeatedNoVisit": {
+    range: "Decimal",
+    label: "Repeated No Visit",
+    initialValue: 0,
+    showTimeSeries: true,
+    computeOnlyAtEnd: false,
+    expression: function () {
+      var total = 0;
+      var individual;
+      var individuals = cLASS[ "Individual" ].instances;
+      Object.keys( individuals ).forEach( function ( objId ) {
+        individual = individuals[ objId ];
+        if ( !individual.previousDecision && !individual.decision ) {
+          total += 1;
+        }
+        individual.previousDecision = individual.decision;
+      } );
+
+      return ( total / Object.keys( individuals ).length ) * 100;
+    }
+  },
 
   "threshold": {
     range: "NonNegativeInteger",
@@ -275,7 +299,7 @@ sim.model.statistics = {
     }
   },
 
-  "attendance":{
+  "attendance": {
     objectType:"Bar",
     objectIdRef: 1,
     property: "attendance",
