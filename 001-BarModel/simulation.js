@@ -28,7 +28,7 @@
 sim.scenario.simulationEndTime = 100;
 sim.scenario.idCounter = 2; // optional
 //sim.scenario.idCounter = 1; // optional
-sim.scenario.randomSeed = 1234; // optional
+// sim.scenario.randomSeed = 1234; // optional
 /*******************************************************************************
  * Simulation Configuration
  ******************************************************************************/
