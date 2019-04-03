@@ -19,24 +19,14 @@ oes.ui.explanation = {};
  ******************************************************************************/
 sim.model.name = "EL Farol Bar";
 sim.model.title = "El Farol Bar";
-// sim.model.systemNarrative =
-//     "<p>An Entrepreneur is selling one product type only, such that its "
-//      + "in-house inventory only consists of items of that type. On each "
-//      + "business day, customers come to the shop and place their orders. If "
-//      + "the ordered product quantity is in stock, the customer pays for the "
-//      + "order and the ordered products are provided. Otherwise, the "
-//      + "Entrepreneur has missed a business opportunity and the difference "
-//      + "between order quantity and the inventory level counts as a lost "
-//      + "sale. The order may still be partially fulfilled, if there are "
-//      + "still some items in stock, else the customer receives no item.</p>";
-// sim.model.shortDescription =
-//     "<p>The model defines an simple purchase transaction for a single "
-//         + "product enterprise. For simplicity, customer orders are treated "
-//         + "in an abstract way by aggregating all of them into a single "
-//         + "demand, such that the random variation of the daily order "
-//         + "quantity is modeled by a random variable.</p>"
+sim.model.systemNarrative = "<p></p>";
+sim.model.shortDescription = "<p></p>";
+sim.model.source = "Arthur, W. B. (1994). " +
+  "<a href='https://www.jstor.org/stable/2117868' target='_blank'>Inductive " +
+  "reasoning and bounded rationality</a >, <i>American Economic Review</i>, " +
+  "84(2), p. 406 - 411.";
 sim.model.license = "MIT";
 sim.model.creator = "Siddique Reza Khan";
 sim.model.contributors = "Luis Gustavo Nardin";
 sim.model.created = "2018-11-20";
-sim.model.modified = "2019-03-14";
+sim.model.modified = "2019-04-03";
