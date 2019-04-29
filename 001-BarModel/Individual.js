@@ -85,7 +85,7 @@ var Individual = new cLASS({
       return this.decision;
     },
     /**
-     * Add a new history for each indivivuals for each week
+     * Add a new history for each individuals for each week
      *
      * @param {integer} attendance - Current week attendance
      */
@@ -122,7 +122,7 @@ var Individual = new cLASS({
      * Increment or decrement the level of the accuracy. Here we
      * try to give an award or Increase the value of selected strategy. Again
      * we try to give an degrade or decrease the value of selected strategy.
-     * check the strategy was accurate or not if Bar attendence is more than
+     * check the strategy was accurate or not if Bar attendance is more than
      * threshold and Individual make a decision, to go Bar then he became
      * unhappy and want to change his strategy for the next period of time.
      *
