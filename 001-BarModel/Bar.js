@@ -1,11 +1,11 @@
 /******************************************************************************
- * Bar Class - Individuals will be going to attend into the Bar in single week.
+ * Bar object class
  *
  * @copyright Copyright 2018-2019 Brandenburg University of Technology
  * @author Siddique Reza Khan
  * @license MIT License (MIT)
 *******************************************************************************/
-var Bar = new cLASS({
+var Bar = new cLASS( {
   Name: "Bar",
   shortLabel: "bar",
   supertypeName: "oBJECT",
@@ -17,4 +17,4 @@ var Bar = new cLASS({
   },
   methods: {
   }
-});
+} );

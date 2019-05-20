@@ -1,36 +1,34 @@
 /*******************************************************************************
- * Individual Class - Individual is trying to decide if he/she will attend into
- * the bar for pleasure or stay in the home on the basis of some previous
- * available weeekly datas and some sort of strategies to take accurate
- * decision.
+ * Individual object class - Individual who decides to attend the bar or stays
+ * home based on the experience of the previous weeks.
  *
  * @copyright Copyright 2018-2019 Brandenburg University of Technology
  * @author Siddique Reza Khan
  * @license MIT License (MIT)
  ******************************************************************************/
-var Individual = new cLASS({
+var Individual = new cLASS( {
   Name: "Individual",
   shortLabel: "individual",
   supertypeName: "oBJECT",
   properties: {
     "previousDecision": {
       range: "Boolean",
-      label: "Person's previous decision about go to the bar",
+      label: "Last decision to attend the bar",
       shortLabel: "pD"
     },
     "decision": {
       range: "Boolean",
-      label: "Person's decision about go to the bar",
+      label: "Current decision to attend the bar",
       shortLabel: "D"
     },
     "threshold": {
       range: "NonNegativeInteger",
-      label: "People satisfaction",
+      label: "Preference threshold",
       shortLabel: "H0"
     },
     "weekAttendance": {
       range: "NonNegativeInteger",
-      label: "Per week Data",
+      label: "Attendance memory",
       shortLabel: "d",
       minCard: 0,
       maxCard: Infinity
@@ -42,14 +40,14 @@ var Individual = new cLASS({
       minCard: 0,
       maxCard: Infinity
     },
-    "strategySelecteded": {
+    "strategySelected": {
       range: "NonNegativeInteger",
-      label: "Selected of Strategy",
+      label: "Current Strategy",
       shortLabel: "sS"
     },
     "accuracies": {
       range: "NonNegativeInteger",
-      label: "Strategies accuracy",
+      label: "Efficacy of the strategies",
       shortLabel: "A",
       minCard: 0,
       maxCard: Infinity
@@ -57,27 +55,24 @@ var Individual = new cLASS({
   },
   methods: {
     /**
-     * Select random strategy for the individual and get the weight
-     * for calculate and guess total attendance or Select a strategy from
-     * getting a data from accuracy vector sets.
+     * Decides whether or not to attend the bar this week
      *
-     * @return True if predicted attendance lower than threshold,
-     * otherwise False
+     * @return True if decide to attend, False otherwise
      */
     "decide": function () {
+      var attendanceEstimation = 0;
 
-      var count;
-      var totalAttendance = 0;
-      var numOfWeekWeights = [];
+      // Choose one strategy
       this.selectStrategy();
-      numOfWeekWeights = this.strategies[this.strategySelecteded].weights;
 
-      // Get a final attendance based on strategies and weekAttendance.
-      for (count = 0; count < numOfWeekWeights.length; count += 1) {
-        totalAttendance += numOfWeekWeights[count] * this.weekAttendance[count];
+      // Estimate the attendance based on the chosen strategy and prior
+      // experience
+      this.strategies[ this.strategySelected ].weights.forEach(
+        ( weight, index ) => {
+          attendanceEstimation += weight * this.weekAttendance[ index ];
+        } );
 
-      }
-      if (totalAttendance <= sim.v.threshold) {
+      if ( attendanceEstimation <= this.threshold ) {
         this.decision = true;
       } else {
         this.decision = false;
@@ -85,57 +80,49 @@ var Individual = new cLASS({
       return this.decision;
     },
     /**
-     * Add a new history for each individuals for each week
+     * Add attendance into Individual's memory
      *
      * @param {integer} attendance - Current week attendance
      */
-    "addAttendance": function (attendance) {
-      this.weekAttendance.push(attendance);
-      this.weekAttendance = this.weekAttendance.slice(-sim.v.numOfWeeks);
+    "addAttendance": function ( attendance ) {
+      this.weekAttendance.push( attendance );
+      this.weekAttendance = this.weekAttendance.slice( -sim.v.numOfWeeks );
     },
-
     /**
-    * Create an algorithm to pick an accurate strategy selection
-    * for decision making to go to the bar or not go to the Bar.
+    * Select the most accurate strategy to decide whether or not to attend the
+    * bar.
     */
     "selectStrategy": function () {
+      var i;
       var maxAccuracyCount = -Infinity;
       var selectIndexOfStrategy = [];
       var tempAccuracies = this.accuracies;
-      var i;
 
-      for (i = 0; i < sim.v.numOfStrategies; i += 1) {
-        if (maxAccuracyCount < tempAccuracies[i]) {
+      for ( i = 0; i < sim.v.numOfStrategies; i += 1 ) {
+        if ( maxAccuracyCount < tempAccuracies[ i ] ) {
           selectIndexOfStrategy = [];
-          maxAccuracyCount = tempAccuracies[i];
-        } else if (maxAccuracyCount > tempAccuracies[i]) {
+          maxAccuracyCount = tempAccuracies[ i ];
+        } else if ( maxAccuracyCount > tempAccuracies[ i ] ) {
           continue;
         }
-        selectIndexOfStrategy.push(i);
+        selectIndexOfStrategy.push( i );
       }
-      this.strategySelecteded =
-        selectIndexOfStrategy[rand.uniformInt(0,
-          selectIndexOfStrategy.length - 1)];
-    },
 
+      this.strategySelected = selectIndexOfStrategy[ rand.uniformInt( 0,
+        selectIndexOfStrategy.length - 1 ) ];
+    },
     /**
-     * Increment or decrement the level of the accuracy. Here we
-     * try to give an award or Increase the value of selected strategy. Again
-     * we try to give an degrade or decrease the value of selected strategy.
-     * check the strategy was accurate or not if Bar attendance is more than
-     * threshold and Individual make a decision, to go Bar then he became
-     * unhappy and want to change his strategy for the next period of time.
+     * Update the strategy accuracy.
      *
-     * @param {integer} attendance - Current week attendance
-     *
+     * @param {integer} attendance - Actual week attendance
      */
-    "accuracyMeasurement": function (attendance) {
-      if (((attendance > sim.v.threshold) && (this.decision === true)) ||
-        ((attendance < sim.v.threshold) && (this.decision === false))) {
-        this.accuracies[this.strategySelecteded] -= 1;
+    "accuracyMeasurement": function ( attendance ) {
+      if ( ( ( attendance > this.threshold ) && ( this.decision === true ) ) ||
+        ( ( attendance < this.threshold ) && ( this.decision === false ) ) ) {
+        this.accuracies[ this.strategySelected ] -= 1;
       } else {
-        this.accuracies[this.strategySelecteded] += 1;
+        this.accuracies[ this.strategySelected ] += 1;
       }
     }
   }
-});
+} );

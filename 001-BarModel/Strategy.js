@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Strategy object class
+ * Strategy object class - Represents one strategy of the Individual to decide
+ * attending the bar.
  *
  * @copyright Copyright 2018-2019 Brandenburg University of Technology
  * @author Siddique Reza Khan
  * @license MIT License (MIT)
  ******************************************************************************/
-var Strategy = new cLASS({
+var Strategy = new cLASS( {
   Name: "Strategy",
   shortLabel: "strategy",
   supertypeName: "oBJECT",
@@ -20,4 +21,4 @@ var Strategy = new cLASS({
   },
   methods: {
   }
-});
+} );
